@@ -1,4 +1,4 @@
-# Couchbase-Mobile-Inventory-Management-Terraform
+# Quick Deploy Couchbase Mobile
 Couchbase's inventory management demo mobile application [https://github.com/couchbase-examples/couchbase-lite-retail-demo] introduces you to core Couchbase Mobile concepts and unique advantages:
 - Moving data from the edge to the cloud and back again. 
 - Enabling one hundred percent availability in the field.
