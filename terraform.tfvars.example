@@ -2,6 +2,7 @@
 auth_token      = "{api-secret}"  # Capella API key secret (Generate Capella Management API Key)
 organization_id = "{org-id}"      # From: curl .../v4/organizations
 project_id      = "{project-id}"  # From: curl .../v4/organizations/{org_id}/projects
+allowed_cidr = "[IP_ADDRESS]/32"  # Your public IP with /32 suffix (e.g. "203.0.113.5/32") — from: curl -s https://api.ipify.org
 
 cloud_provider = {
   name   = "aws"
@@ -54,5 +55,3 @@ db_credential = {
   username = "simple-retail"
   bucket   = "supermarket"
 }
-
-allowed_cidr = "[IP_ADDRESS]/32"  # Your public IP with /32 suffix (e.g. "203.0.113.5/32") — from: curl -s https://api.ipify.org

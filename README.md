@@ -16,10 +16,11 @@ Simple to me means:
 - Setup in the most logical sequence of steps that are optimized for efficiency.
 
 ## Get Started
+Head to [https://cloud.couchbase.com/sign-up] and sign up for a free Capella account.
+ 
+If you get stuck, you can refer to this tutorial [https://docs.couchbase.com/cloud/get-started/create-account.html]. 
 
-**Solutions Engineers:** Use the Field Engineering Capella tenant — do not create a personal account. Log in at [https://cloud.couchbase.com] with your Couchbase SSO credentials and create a Project called "simple-retail" within the Field Engineering organization.
-
-**Everyone else:** Sign up for a paid Capella account at [https://cloud.couchbase.com/sign-up]. Once signed up, create an Organization called "Simple Retail" and a Project called "simple-retail."
+Once you're signed up, create an Organization called "Simple Retail" and a Project called "simple-retail." 
 
 ![Create Project](images/create-project.png)
 
@@ -30,14 +31,14 @@ Before collecting your credentials, rename the example variables file so you're 
 mv terraform.tfvars.example terraform.tfvars
 ```
 
-Also create the `.env` file used for the API calls in the steps below:
+Also rename the example env file:
 
 ```bash
-touch .env
+cp .env.example .env
 ```
 
 ## Generate Capella Management API Key
-Inside of your Simple Retail Organization, click generate key. Double check you are generating a key from your Organization and not your Project. You should see Organization Owner permissions as an option.
+Inside of your Simple Retail Organization or Project, click generate key.  Depending on where you generate your Management API Key, you should see Organization Owner or Project Owner permissions. Make sure one of these permissions are selected.
 
 ![Generate API Key](images/generate-key.png)
 
