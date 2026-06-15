@@ -15,6 +15,11 @@ variable "cloud_provider" {
   description = "Cloud Provider configuration"
 }
 
+variable "cluster" {
+  description = "Cluster node compute and sizing configuration"
+  default     = {}
+}
+
 variable "couchbase_server" {
   description = "Couchbase Server configuration"
 }

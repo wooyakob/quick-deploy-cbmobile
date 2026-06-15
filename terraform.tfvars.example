@@ -1,6 +1,7 @@
-auth_token = "{api-secret}"
-organization_id = "{org-id}"
-project_id = "{project-id}"
+# ── Required: replace all four values below before running terraform ──────────
+auth_token      = "{api-secret}"  # Capella API key secret (Generate Capella Management API Key)
+organization_id = "{org-id}"      # From: curl .../v4/organizations
+project_id      = "{project-id}"  # From: curl .../v4/organizations/{org_id}/projects
 
 cloud_provider = {
   name   = "aws"
@@ -19,7 +20,7 @@ bucket = {
   memory_allocation_in_mb    = 100
   bucket_conflict_resolution = "seqno"
   durability_level           = "none"
-  replicas                   = 0
+  replicas                   = 1
   flush                      = false
   time_to_live_in_seconds    = 0
   eviction_policy            = "fullEviction"
@@ -31,7 +32,7 @@ collections = ["orders", "inventory", "profile"]
 app_service = {
   name        = "supermarket-appservice"
   description = "Supermarket App Service."
-  nodes       = 1
+  nodes       = 2
   compute = {
     cpu = 2
     ram = 4
@@ -54,4 +55,4 @@ db_credential = {
   bucket   = "supermarket"
 }
 
-allowed_cidr = "[IP_ADDRESS]" 
+allowed_cidr = "[IP_ADDRESS]/32"  # Your public IP with /32 suffix (e.g. "203.0.113.5/32") — from: curl -s https://api.ipify.org

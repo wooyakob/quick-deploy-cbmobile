@@ -16,16 +16,28 @@ Simple to me means:
 - Setup in the most logical sequence of steps that are optimized for efficiency.
 
 ## Get Started
-Head to [https://cloud.couchbase.com/sign-up] and sign up for a free Capella account.
- 
-If you get stuck, you can refer to this tutorial [https://docs.couchbase.com/cloud/get-started/create-account.html]. 
 
-Once you're signed up, create an Organization called "Simple Retail" and a Project called "simple-retail." 
+**Solutions Engineers:** Use the Field Engineering Capella tenant — do not create a personal account. Log in at [https://cloud.couchbase.com] with your Couchbase SSO credentials and create a Project called "simple-retail" within the Field Engineering organization.
+
+**Everyone else:** Sign up for a paid Capella account at [https://cloud.couchbase.com/sign-up]. Once signed up, create an Organization called "Simple Retail" and a Project called "simple-retail."
 
 ![Create Project](images/create-project.png)
 
+## Set Up Configuration Files
+Before collecting your credentials, rename the example variables file so you're ready to fill in values as you go:
+
+```bash
+mv terraform.tfvars.example terraform.tfvars
+```
+
+Also create the `.env` file used for the API calls in the steps below:
+
+```bash
+touch .env
+```
+
 ## Generate Capella Management API Key
-Inside of your Simple Retail Organization, click generate key. Double check you are generating a key fron your Organization and not your Project. You should see Organization Owner permissions as an option.
+Inside of your Simple Retail Organization, click generate key. Double check you are generating a key from your Organization and not your Project. You should see Organization Owner permissions as an option.
 
 ![Generate API Key](images/generate-key.png)
 
@@ -43,9 +55,16 @@ After generating your key, copy the secret.
 
 ![Copy Secret](images/copy-secret.png)
 
-Add this secret to auth_token = "{api-secret}" in terraform.tfvars.
+Add the secret to `terraform.tfvars`:
+```hcl
+auth_token = "your-secret-here"
+```
 
-Add it to .env as AUTH_TOKEN="{api-secret}" and export AUTH_TOKEN="{api-secret}" in your terminal.
+Add it to `.env` and export it so the API calls below can use it:
+```bash
+echo 'AUTH_TOKEN="your-secret-here"' >> .env
+export AUTH_TOKEN="your-secret-here"
+```
 
 ## Use Management API to Fetch IDs
 ### Fetch Organization ID
@@ -61,10 +80,13 @@ Find the returned Organization ID in your terminal.
 
 ![Organization ID](images/fetch-orgid.png)
 
-Update terraform.tfvars with this Organization ID.
+Update `organization_id` in `terraform.tfvars`:
+```hcl
+organization_id = "your-org-id-here"
+```
 
 ### Fetch Project ID
-Update the Organization ID below and run this curl command in your terminal to return your Project's ID:
+Replace `{org_id}` with your Organization ID, then run:
 
 ```bash
 curl -sS "https://cloudapi.cloud.couchbase.com/v4/organizations/{org_id}/projects" \
@@ -76,7 +98,10 @@ Find the returned Project ID in your terminal.
 
 ![Project ID](images/fetch-projectid.png)
 
-Update terraform.tfvars with your Project ID.
+Update `project_id` in `terraform.tfvars`:
+```hcl
+project_id = "your-project-id-here"
+```
 
 ### Get Public IP
 Couchbase Capella requires an allowed IP (allowlist) to permit direct database connections (like for `cbimport`).
@@ -85,7 +110,10 @@ Run this command to get your public IP:
 curl -s https://api.ipify.org
 ```
 
-Update terraform.tfvars with this IP address in the allowed_cidr variable, adding /32 at the end (e.g., "67.212.150.204/32").
+Update `allowed_cidr` in `terraform.tfvars` with the returned IP, adding `/32` at the end:
+```hcl
+allowed_cidr = "203.0.113.5/32"
+```
 
 You should now have your Management API Secret, Organization ID, Project ID, and Allowed IP. With these, you're ready to build your infrastructure.
 
@@ -144,43 +172,25 @@ You'll see that specific resources depend upon another, you can't create an App 
 The exact deployment time may vary but this example took around 5 minutes.
 
 ## Load Demo Data
-The JSON data required for this demo is in the demo-dataset directory.
+The JSON data required for this demo is in the `demo-dataset` directory.
 
-To load data into Capella using the cbimport tool, you'll need database access credentials and your Cluster's connection string.
+The `cbimport.sh` script automatically reads your cluster connection string and database password from Terraform outputs — no manual editing needed.
 
-You can access your database credentials and connection string simply from the terraform outputs.
+> If your public IP has changed since you first ran `terraform apply`, you must update `allowed_cidr` in `terraform.tfvars` and run `terraform apply` again before loading data.
 
-To get your Cluster's connection string, run:
-
-```bash
-terraform output connection_string
-```
-
-To get your created Database Credentials, run:
+Move to the demo-dataset directory:
 
 ```bash
-terraform output -raw db_credential_password
+cd demo-dataset
 ```
 
-Modify the cbimport command with your unique password and connection string. 
-
-![Get Connection String and Database Credentials](images/get_conn_pass.png)
-
-> If your public IP has changed since you first ran `terraform apply`, you must update the `allowed_cidr` in `terraform.tfvars` and run `terraform apply` again to update the allowlist.
-
-You can fetch your allowed CIDR that was created by Terraform to check by running:
-
-```bash
-terraform output allowed_cidr
-```
-
-Move to the demo-dataset directory and run this command to make the script executable:
+Make the script executable:
 
 ```bash
 chmod +x cbimport.sh
 ```
 
-You can then run the script to load all of the required data into the appropriate collections:
+Run the script to load all data into the appropriate collections:
 
 ```bash
 ./cbimport.sh
@@ -231,10 +241,3 @@ Run to destroy all of the infrastructure you've created.
 ```bash
 terraform destroy
 ```
-There is a free tier limitation that requires you to run terraform destroy again to fully remove the infrastructure once the bucket has been deleted.
-
-![Destroy Bug](images/destroy-bug.png)
-
-Capella does destroy the bucket the first time terraform destroy is run, despite the error message.
-
-Run teraform destroy again with the bucket deleted to remove all of the remaining infrastructure.
