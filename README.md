@@ -138,8 +138,6 @@ In the Parent directory, run:
 terraform init
 ```
 
-![Terraform Init](images/tf-init.png)
-
 Check the plan before building by running:
 
 ```bash
