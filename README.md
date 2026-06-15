@@ -16,11 +16,7 @@ Simple to me means:
 - Setup in the most logical sequence of steps that are optimized for efficiency.
 
 ## Get Started
-Head to [https://cloud.couchbase.com/sign-up] and sign up for a free Capella account.
- 
-If you get stuck, you can refer to this tutorial [https://docs.couchbase.com/cloud/get-started/create-account.html]. 
-
-Once you're signed up, create an Organization called "Simple Retail" and a Project called "simple-retail." 
+Create an Organization called "Simple Retail" and a Project called "simple-retail." 
 
 ![Create Project](images/create-project.png)
 
@@ -135,8 +131,6 @@ For any challenges with the Capella Terraform Provider installation, please refe
 
 Check your installation is successful by running terraform version in your terminal.
 
-![Terraform Version](images/terraform-capella-provider.png)
-
 ## Build Infrastructure With Terraform
 In the Parent directory, run:
 
@@ -164,13 +158,9 @@ Enter yes to start building.
 
 You will see your Capella cluster deploying in the UI.
 
-![Capella Cluster Deploying](images/cluster-deploying.png)
-
 You'll see that specific resources depend upon another, you can't create an App Service without a Capella cluster to link it to, and are therefore deployed in a specific order. The steps are clearly visible in your terminal.
 
-![Terraform Deployment Process](images/terraform-deployment-process.png)
-
-The exact deployment time may vary but this example took around 5 minutes.
+The exact deployment time may vary but it usually takes around 5 minutes.
 
 ## Load Demo Data
 The JSON data required for this demo is in the `demo-dataset` directory.
