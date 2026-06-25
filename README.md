@@ -38,7 +38,7 @@ Inside of your Simple Retail Organization or Project, click generate key.  Depen
 
 ![Generate API Key](images/generate-key.png)
 
-Give the key a name, "simple-retail" and tick Organization Owner for key permissions.
+Give the key a name, "simple-retail" and tick Organization Owner or Project Owner for key permissions (depending on where you are generating the key from).
 
 Do not add an allowed IP address and leave access unrestricted by default.
 
